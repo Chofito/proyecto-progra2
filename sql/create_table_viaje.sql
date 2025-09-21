@@ -1,0 +1,13 @@
+CREATE TABLE VIAJE (
+    id NUMBER(10) GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
+    origen VARCHAR2(100) NOT NULL,
+    destino VARCHAR2(100) NOT NULL,
+    fecha_salida DATE NOT NULL,
+    fecha_llegada DATE NOT NULL,
+    estado VARCHAR2(20) NOT NULL,
+    CONSTRAINT PK_VIAJE PRIMARY KEY (id),
+    CONSTRAINT CHK_VIAJE_ESTADO CHECK (estado IN ('En curso', 'Pendiente')),
+    CONSTRAINT CHK_VIAJE_FECHAS CHECK (fecha_llegada >= fecha_salida)
+);
+
+COMMIT;
