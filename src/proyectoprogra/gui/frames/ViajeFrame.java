@@ -1313,7 +1313,7 @@ public class ViajeFrame extends JFrame {
      */
     private void abrirMapa(Viaje viaje) {
         try {
-            MapaModal mapaModal = new MapaModal(this);
+            MapaModal mapaModal = new MapaModal(this, viaje);
             mapaModal.setVisible(true);
         } catch (Exception e) {
             mostrarMensaje("Error al abrir el mapa: " + e.getMessage(), 
