@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import proyectoprogra.OracleConnector;
+import proyectoprogra.database.OracleConnector;
 import proyectoprogra.model.Viaje;
 
 public class ViajeService {
@@ -12,10 +12,11 @@ public class ViajeService {
     public Viaje create(Viaje v) {
         validate(v);
 
-        String sql = "INSERT INTO VIAJE (origen, destino, fecha_salida, fecha_llegada, estado) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO ProyectoProgramacion.VIAJE (origen, destino, fecha_salida, fecha_llegada, estado) VALUES (?,?,?,?,?)";
 
         try (Connection con = OracleConnector.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = con.prepareStatement(sql, new String[]{"ID"}))
+        {
 
             ps.setString(1, v.getOrigen());
             ps.setString(2, v.getDestino());
@@ -44,7 +45,7 @@ public class ViajeService {
     }
 
     public Viaje getById(int id) {
-        String sql = "SELECT id, origen, destino, fecha_salida, fecha_llegada, estado FROM VIAJE WHERE id = ?";
+        String sql = "SELECT id, origen, destino, fecha_salida, fecha_llegada, estado FROM ProyectoProgramacion.VIAJE WHERE id = ?";
 
         try (Connection con = OracleConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -63,7 +64,7 @@ public class ViajeService {
     }
 
     public List<Viaje> listAll() {
-        String sql = "SELECT id, origen, destino, fecha_salida, fecha_llegada, estado FROM VIAJE ORDER BY id";
+        String sql = "SELECT id, origen, destino, fecha_salida, fecha_llegada, estado FROM ProyectoProgramacion.VIAJE ORDER BY id";
 
         List<Viaje> list = new ArrayList<>();
 
@@ -88,7 +89,7 @@ public class ViajeService {
 
         validate(v);
 
-        String sql = "UPDATE VIAJE SET origen=?, destino=?, fecha_salida=?, fecha_llegada=?, estado=? WHERE id=?";
+        String sql = "UPDATE ProyectoProgramacion.VIAJE SET origen=?, destino=?, fecha_salida=?, fecha_llegada=?, estado=? WHERE id=?";
 
         try (Connection con = OracleConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -114,7 +115,7 @@ public class ViajeService {
     }
 
     public boolean delete(int id) {
-        String sql = "DELETE FROM VIAJE WHERE id=?";
+        String sql = "DELETE FROM ProyectoProgramacion.VIAJE WHERE id=?";
 
         try (Connection con = OracleConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
