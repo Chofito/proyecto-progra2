@@ -5,6 +5,7 @@ import proyectoprogra.service.ViajeService;
 import proyectoprogra.utils.ViajeManager;
 import proyectoprogra.utils.ViajeTableModel;
 import proyectoprogra.utils.UIConstants;
+import proyectoprogra.gui.modals.MapaModal;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -554,6 +555,23 @@ public class ViajeFrame extends JFrame {
         viajesTable.getColumnModel().getColumn(6).setCellRenderer(buttonEditor);
         viajesTable.getColumnModel().getColumn(6).setCellEditor(buttonEditor);
         
+        // Agregar listener para abrir mapa al hacer clic en una fila
+        viajesTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) { // Un solo clic
+                    int row = viajesTable.getSelectedRow();
+                    if (row >= 0) {
+                        int modelRow = viajesTable.convertRowIndexToModel(row);
+                        Viaje viaje = tableModel.getViajeAt(modelRow);
+                        if (viaje != null) {
+                            abrirMapa(viaje);
+                        }
+                    }
+                }
+            }
+        });
+        
         
         viajesTable.setSelectionBackground(Color.WHITE);
         viajesTable.setSelectionForeground(Color.BLACK);
@@ -599,10 +617,9 @@ public class ViajeFrame extends JFrame {
             viajeActualizado.setFechaLlegada(fechaLlegadaSeleccionada);
             viajeActualizado.setEstado((String) estadoCombo.getSelectedItem());
             
-            ViajeService viajeService = new ViajeService();
-            Viaje viajeGuardado = viajeService.update(viajeActualizado);
+            boolean actualizado = ViajeManager.actualizarViaje(viajeActualizado);
             
-            if (viajeGuardado != null) {
+            if (actualizado) {
                 refrescarTabla();
                 limpiarFormulario();
                 resetearBotones();
@@ -1289,6 +1306,20 @@ public class ViajeFrame extends JFrame {
                   .replace("\r", "\\r")
                   .replace("\t", "\\t");
     }
+    
+    /**
+     * Abre el modal de mapa para el viaje seleccionado
+     * @param viaje El viaje a mostrar en el mapa
+     */
+    private void abrirMapa(Viaje viaje) {
+        try {
+            MapaModal mapaModal = new MapaModal(this);
+            mapaModal.setVisible(true);
+        } catch (Exception e) {
+            mostrarMensaje("Error al abrir el mapa: " + e.getMessage(), 
+                          UIConstants.ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     public static void main(String args[]) {
         try {
@@ -1297,7 +1328,7 @@ public class ViajeFrame extends JFrame {
             e.printStackTrace();
         }
         
-        SwingUtilities.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ViajeFrame().setVisible(true);
             }

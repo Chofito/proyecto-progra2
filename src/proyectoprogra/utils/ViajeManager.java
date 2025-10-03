@@ -42,6 +42,23 @@ public class ViajeManager {
         return false;
     }
     
+    public static boolean actualizarViaje(Viaje viaje) {
+        if (viaje == null) {
+            return false;
+        }
+        try {
+            Viaje viajeActualizado = viajeService.update(viaje);
+            if (viajeActualizado != null) {
+                inicializarDesdeBaseDatos();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            System.err.println("Error al actualizar viaje en la base de datos: " + e.getMessage());
+            return false;
+        }
+    }
+    
     
     public static List<Viaje> obtenerTodosLosViajes() {
         try {

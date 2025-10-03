@@ -32,7 +32,7 @@ public class ProyectoProgra {
                 try {
                     ViajeFrame frame = new ViajeFrame();
                     frame.setVisible(true);
-                    System.out.println("✓ Aplicación de Gestión de Viajes iniciada exitosamente");
+                    System.out.println("Aplicación de Gestión de Viajes iniciada exitosamente");
                 } catch (Exception e) {
                     System.err.println("Error al iniciar la aplicación: " + e.getMessage());
                     e.printStackTrace();
