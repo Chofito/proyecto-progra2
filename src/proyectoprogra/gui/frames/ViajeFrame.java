@@ -1,11 +1,11 @@
 package proyectoprogra.gui.frames;
 
 import proyectoprogra.model.Viaje;
+import proyectoprogra.service.ViajeService;
 import proyectoprogra.utils.ViajeManager;
 import proyectoprogra.utils.ViajeTableModel;
 import proyectoprogra.utils.UIConstants;
 import proyectoprogra.gui.modals.MapaModal;
-import proyectoprogra.export.ExcelExporter;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -65,7 +65,6 @@ public class ViajeFrame extends JFrame {
     private JButton buscarButton;
     private JButton refrescarButton;
     private JButton descargarJsonButton;
-    private JButton descargarExcelButton;
     private int viajeEditando = -1;
     
     private JTable viajesTable;
@@ -327,7 +326,7 @@ public class ViajeFrame extends JFrame {
         jsonIcon.setIconColor(Color.WHITE);
         descargarJsonButton.setIcon(jsonIcon);
         
-        descargarExcelButton = createStyledButton(UIConstants.DOWNLOAD_EXCEL_BUTTON_TEXT, new Color(34, 139, 34));
+        JButton descargarExcelButton = createStyledButton(UIConstants.DOWNLOAD_EXCEL_BUTTON_TEXT, new Color(34, 139, 34));
         descargarExcelButton.setPreferredSize(new Dimension(160, 35));
         
         FontIcon excelIcon = FontIcon.of(FontAwesomeSolid.FILE_EXCEL);
@@ -523,13 +522,6 @@ public class ViajeFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 descargarJSON();
-            }
-        });
-        
-        descargarExcelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                descargarExcel();
             }
         });
     }
@@ -1252,11 +1244,6 @@ public class ViajeFrame extends JFrame {
                 mostrarMensaje(UIConstants.ERROR_DELETE_TRIP, UIConstants.ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-    
-    private void descargarExcel() {
-        ExcelExporter exporter = new ExcelExporter();
-        exporter.exportarViajesAExcel();
     }
     
     private void descargarJSON() {

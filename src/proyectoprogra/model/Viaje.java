@@ -3,19 +3,32 @@ package proyectoprogra.model;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Modelo que representa un viaje en el sistema.
+ * Contiene toda la información de un viaje: origen, destino, fechas y estado.
+ */
 public class Viaje {
+    // Identificador único del viaje
     private int id;
+    // Ciudad de origen
     private String origen;
+    // Ciudad de destino
     private String destino;
+    // Fecha y hora de salida
     private Date fechaSalida;
+    // Fecha y hora de llegada
     private Date fechaLlegada;
+    // Estado actual del viaje
     private String estado;
 
+    // Estados posibles de un viaje
     public static final String ESTADO_EN_CURSO = "En curso";
     public static final String ESTADO_PENDIENTE = "Pendiente";
 
+    // Constructor vacío
     public Viaje() { }
 
+    // Constructor completo
     public Viaje(int id, String origen, String destino, Date fechaSalida, Date fechaLlegada, String estado) {
         this.id = id;
         this.origen = origen;
@@ -25,6 +38,7 @@ public class Viaje {
         this.estado = estado;
     }
 
+    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -73,6 +87,9 @@ public class Viaje {
         this.estado = estado;
     }
 
+    // Métodos Object
+    
+    // Dos viajes son iguales si tienen el mismo ID
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,11 +104,13 @@ public class Viaje {
         return id == viaje.id;
     }
 
+    // Hash code basado en el ID
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
+    // Representación en texto del viaje
     @Override
     public String toString() {
         return "Viaje{" +
