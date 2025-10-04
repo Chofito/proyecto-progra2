@@ -1,38 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package proyectoprogra;
 
-import proyectoprogra.model.Viaje;
-import proyectoprogra.service.ViajeService;
-import java.util.Date;
+import proyectoprogra.gui.frames.ViajeFrame;
+import proyectoprogra.database.OracleConnector;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
-/**
- *
- * @author rjrob
- */
 public class ProyectoProgra {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // Demo rápido del modelo y servicio Viaje
-        ViajeService service = new ViajeService();
-
-        Viaje v1 = new Viaje(1, "San José", "Alajuela", new Date(System.currentTimeMillis() + 3600_000),
-                new Date(System.currentTimeMillis() + 7200_000), Viaje.ESTADO_PENDIENTE);
-        Viaje v2 = new Viaje(2, "Cartago", "Heredia", new Date(System.currentTimeMillis() + 10_800_000),
-                new Date(System.currentTimeMillis() + 14_400_000), Viaje.ESTADO_EN_CURSO);
-
-        service.create(v1);
-        service.create(v2);
-
-        System.out.println("Viajes registrados:");
-        for (Viaje v : service.listAll()) {
-            System.out.println(v);
+        System.out.println("=== INICIANDO APLICACIÓN DE GESTIÓN DE VIAJES ===");
+        
+        System.out.println("Verificando conexión a la base de datos...");
+        if (!OracleConnector.verifyConnection()) {
+            System.err.println("No se pudo establecer conexión con la base de datos.");
+            System.err.println("La aplicación puede no funcionar correctamente.");
+            try {
+                System.in.read();
+            } catch (Exception e) {
+            }
         }
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            System.err.println("Error al configurar el look and feel: " + e.getMessage());
+        }
+        
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ViajeFrame frame = new ViajeFrame();
+                    frame.setVisible(true);
+                    System.out.println("Aplicación de Gestión de Viajes iniciada exitosamente");
+                } catch (Exception e) {
+                    System.err.println("Error al iniciar la aplicación: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
-    
 }
